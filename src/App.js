@@ -1,18 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Ninjas from './Ninjas';
+import AddNinja from './AddNinja';
 
 class App extends Component {
+  state = {
+    ninjas: [
+      {name: "ryu", age: 30, belt: "black", id: 1},
+      {name: "joe", age: 20, belt: "white", id: 2},
+      {name: "jenna", age: 70, belt: "yellow", id: 3},
+    ]
+  }
+  addNinja = (ninja) => {
+    ninja.id = Math.random();
+    let ninjas = [...this.state.ninjas, ninja];
+    this.setState({
+      ninjas
+    })
+  }
+  deleteNinja = (id) => {
+    let ninjas = this.state.ninjas.filter(ninja => {
+      return ninja.id !== id
+    })
+    this.setState({
+      ninjas
+    })
+  }
+  componentDidMount = () => {
+    console.log('mounted')  
+  }
+  componentDidUpdate = (prevProps, prevState) => {
+    console.log('updated');
+    console.log(prevProps, prevState)
+  }
+  
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+          <Ninjas ninjas={this.state.ninjas} deleteNinja={this.deleteNinja}/>
+          <AddNinja addNinja={this.addNinja} />
       </div>
     );
   }
